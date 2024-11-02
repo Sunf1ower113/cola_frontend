@@ -1,0 +1,28 @@
+.form-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.form-input label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333; /* Цвет текста для лейбла */
+    margin-bottom: 6px;
+}
+
+.form-input input {
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 12px; /* Более выраженные закругления */
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9; /* Нежный светло-серый фон */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Стили при фокусе */
+.form-input input:focus {
+    border-color: #5a9bf6; /* Голубой оттенок для границы */
+    box-shadow: 0 0 8px rgba(90, 155, 246, 0.3); /* Лёгкая тень при фокусе */
+}
