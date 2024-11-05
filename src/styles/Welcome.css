@@ -1,0 +1,16 @@
+.enot-container h1 {
+    text-align: center;
+    margin-bottom: 1px;
+    margin: 5px;
+    font-size: 50
+}
+
+.enot-container h1:first-of-type {
+    padding-top: 20px;
+}
+
+.enot-container img {
+    align-self: center;
+    margin:  auto;
+    display: block;
+}

@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Welcome from "./pages/Welcome";
 import Profile from "./pages/Profile";
 import BoxDetails from "./pages/BoxDetails";
 import AllBoxes from "./pages/AllBoxes";
@@ -16,11 +17,12 @@ import "./App.css";
 function App() {
     return (
         <AuthProvider>
-            <RecycleBoxProvider>
+        <RecycleBoxProvider>
             <Router>
                 <Navbar /> {/* Навбар будет виден на всех страницах */}
                 <div style={{ marginTop: '60px' }}> {/* Отступ для фиксации */}
                     <Routes>
+                        <Route path="/" element={<Welcome />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/profile" element={<Profile />} />
@@ -30,7 +32,7 @@ function App() {
                     </Routes>
                 </div>
             </Router>
-            </RecycleBoxProvider>
+        </RecycleBoxProvider>
         </AuthProvider>
     );
 }
