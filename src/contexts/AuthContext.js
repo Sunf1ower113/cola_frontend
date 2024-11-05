@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { registerUser, loginUser } from '../services/userService';
+import { registerUser, loginUser, getUserSettings as fetchUserSettings } from '../services/userService';
 
 const AuthContext = createContext();
 
@@ -8,21 +8,29 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         const response = await registerUser(userData);
-        setUser(response.user); // Устанавливаем данные пользователя
+        setUser(response.user);
     };
 
     const login = async (userData) => {
         const response = await loginUser(userData);
-        setUser(response.user);
+        setUser(response.user); // Ensure user state is updated immediately after login
     };
 
     const logout = () => {
         setUser(null);
-        // Дополнительно можно удалить куки с токеном
+    };
+
+    const getUserSettings = async () => {
+        try {
+            const data = await fetchUserSettings();
+            setUser(data); // Set user data from API response
+        } catch (error) {
+            console.error("Failed to fetch user settings", error);
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ user, register, login, logout }}>
+        <AuthContext.Provider value={{ user, register, login, logout, getUserSettings }}>
             {children}
         </AuthContext.Provider>
     );

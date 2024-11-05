@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/Button/Button';
 import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 import '../styles/Register.css';
-import api from "../services/Api";
 
 function Register() {
     const { register } = useAuth();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,6 +22,7 @@ function Register() {
         }
         try {
             await register({ email, password });
+            navigate('/login');
         } catch (err) {
             setError(err.message || 'Failed to register');
         }

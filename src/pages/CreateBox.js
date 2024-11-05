@@ -1,51 +1,64 @@
 // src/pages/CreateBox.js
-import React, { useState } from "react";
-import api from "../services/Api";
-import ErrorMessage from "../components/ErrorMessage/ErrorMessage"; // Импортируем компонент ErrorMessage
+import React, { useState } from 'react';
+import { useRecycleBox } from '../contexts/BoxContext';
+import FormInput from '../components/FormInput/FormInput';
+import Button from '../components/Button/Button';
+import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
+import '../styles/CreateBox.css';
 
 function CreateBox() {
-    const [title, setTitle] = useState("");
-    const [address, setAddress] = useState("");
-    const [capacity, setCapacity] = useState(0);
-    const [error, setError] = useState(""); // Состояние для ошибки
-    const [successMessage, setSuccessMessage] = useState(""); // Состояние для успеха
+    const { createBox, loading, error } = useRecycleBox();
+    const [title, setTitle] = useState('');
+    const [address, setAddress] = useState('');
+    const [capacity, setCapacity] = useState('');
 
-    const handleCreateBox = async () => {
-        setError(""); // Сбрасываем ошибку при новой попытке
-        setSuccessMessage(""); // Сбрасываем сообщение об успехе
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            await api.post("/recyclebox", { title, address, capacity });
-            setSuccessMessage("Recycle box created successfully!");
-        } catch (error) {
-            console.error("Error creating recycle box:", error);
-            setError(error.response?.data?.message || "Failed to create recycle box"); // Устанавливаем сообщение об ошибке
+            await createBox({ title, address, capacity: parseInt(capacity) });
+            alert('Корзина успешно добавлена!');
+            setTitle('');
+            setAddress('');
+            setCapacity('');
+        } catch (err) {
+            alert('Ошибка при добавлении корзины.');
         }
     };
 
     return (
-        <div className="container">
-            <h2>Create Recycle Box</h2>
-            {error && <ErrorMessage message={error} />} {/* Отображаем сообщение об ошибке */}
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>} {/* Отображаем сообщение об успехе */}
-            <input
-                type="text"
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Capacity"
-                value={capacity}
-                onChange={(e) => setCapacity(Number(e.target.value))}
-            />
-            <button onClick={handleCreateBox}>Create Box</button>
+        <div className="create-box-container">
+            <h1>Добавить новую корзину</h1>
+            <form onSubmit={handleSubmit} className="create-box-form">
+                <label>
+                    <FormInput
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                        placeholder="Введите название"
+                    />
+                </label>
+                <label>
+                    <FormInput
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        required
+                        placeholder="Введите адрес"
+                    />
+                </label>
+                <label>
+                    <FormInput
+                        type="number"
+                        value={capacity}
+                        onChange={(e) => setCapacity(e.target.value)}
+                        required
+                        placeholder="Введите емкость"
+                    />
+                </label>
+                <Button text="Создать корзину" type="submit"></Button>
+                {error && <ErrorMessage message={error} />}
+            </form>
         </div>
     );
 }

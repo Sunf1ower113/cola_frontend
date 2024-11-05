@@ -1,18 +1,24 @@
-// src/pages/Profile.js
 import React, { useEffect, useState } from "react";
-import api from "../services/Api";
-import LoadingSpinner from "../components/LoadingSpinner"; // Импорт компонента
+import { useAuth } from "../contexts/AuthContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+// import '../styles/Profile.css';
 
 function Profile() {
-    const [user, setUser] = useState(null);
+    const { user, getUserSettings } = useAuth(); 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        api.get("/profile")
-            .then(response => setUser(response.data))
-            .catch(error => console.error("Error fetching profile", error));
-    }, []);
+        if (!user) {
+            // Fetch user settings if not already available in context
+            getUserSettings().finally(() => setLoading(false));
+        } else {
+            setLoading(false);
+        }
+    }, [user, getUserSettings]);
 
-    if (!user) return <LoadingSpinner />; // Отображаем индикатор загрузки, если данные ещё загружаются
+    if (loading) return <LoadingSpinner />;
+
+    if (!user) return <p>Error loading profile data.</p>;
 
     return (
         <div className="container">
