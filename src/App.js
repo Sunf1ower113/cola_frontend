@@ -8,6 +8,7 @@ import BoxDetails from "./pages/BoxDetails";
 import AllBoxes from "./pages/AllBoxes";
 import CreateBox from "./pages/CreateBox";
 import NavBar from "./components/NavBar"; // Импорт NavBar
+import { RecycleBoxProvider } from './contexts/BoxContext';
 import { AuthProvider } from './contexts/AuthContext';
 import Navbar from './components/Navbar/Navbar';
 import "./App.css";
@@ -15,6 +16,7 @@ import "./App.css";
 function App() {
     return (
         <AuthProvider>
+            <RecycleBoxProvider>
             <Router>
                 <Navbar /> {/* Навбар будет виден на всех страницах */}
                 <div style={{ marginTop: '60px' }}> {/* Отступ для фиксации */}
@@ -28,6 +30,7 @@ function App() {
                     </Routes>
                 </div>
             </Router>
+            </RecycleBoxProvider>
         </AuthProvider>
     );
 }
